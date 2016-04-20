@@ -1,7 +1,8 @@
 <script type="text/javascript" src="<?php echo base_url();?>src/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
 tinymce.init({
-    selector: "textarea"
+    selector: "textarea",
+    height : 400,
  });
 </script>
 <div class="col-md-4">

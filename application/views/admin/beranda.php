@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Administrator-Web Potensi</title>
+	<title>Administrator- Aplikasi Kependudukan</title>
 <script type="text/javascript">
 	$(document).ready(function  () {
 		$('ul li a').click(function() {
@@ -30,6 +30,11 @@
 							<i class="glyphicon glyphicon-star"></i>
 							  Potensi</a>
 						</li> -->
+						<li>
+							<a href="<?php echo site_url('admin/mutasi_penduduk');?>" target="iframe"> 
+							<i class="glyphicon glyphicon-upload"></i>
+							  Mutasi Penduduk</a>
+						</li>
 						<li>
 							<a href="<?php echo site_url('admin/kelola_desa');?>" target="iframe"> 
 							<i class="glyphicon glyphicon-tree-conifer"></i>
@@ -137,7 +142,8 @@
 	<div class="col-md-4"></div>
 	
 	<div class="col-md-12">
-		<iframe name="iframe" frameborder="0" height="150%" width="100%" src="<?php echo site_url('admin/beranda/status');?>"></iframe>
+		<iframe name="iframe" id="frame" frameborder="0" height="150%" width="100%" src="<?php echo site_url('admin/beranda/status');?>">
+		</iframe>
 	</div>
 	</div>
 </div>

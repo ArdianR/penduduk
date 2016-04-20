@@ -7,6 +7,15 @@
 		<div class="panel panel-body">
 			<table class="table table-condensed  table-hover table-striped">
 			<?php foreach ($penduduk->result() as $row):?>
+				<tr>
+					<td colspan="2">
+						<?php if (!empty($row->foto)){?>
+						<img width="500px;" height="auto" class="img-center" src="<?php echo base_url("upload/$row->foto");?>">
+						<?php }else{?>
+						<h1 class="text-center text-muted"> Tidak Ada Foto</h1>
+						<?php };?>
+					</td>
+				</tr>
 				<tr><td>NIK</td><td>:<?php echo $row->nik;?></td></tr>
 				<tr><td>NAMA</td><td>:<?php echo $row->nama;?></td>
 				<tr><td>Tempat,Tanggal Lahir</td><td>: <?php echo "$row->tempat_lahir,"; echo dateindo($row->tanggal_lahir);?></td></tr>
@@ -27,8 +36,10 @@
 						<a class="btn btn-default" href="<?php echo site_url('admin/kelola_penduduk');?>">Kembali</a>	
 					</td>
 					<td class="text-right">
-						<a class="btn btn-warning" href=""><i class="glyphicon glyphicon-edit"></i> Edit</a>
-						<a class="btn btn-danger" href=""> <i class="glyphicon glyphicon-remove"></i> Hapus</a>	
+						<a class="btn btn-warning"  href="<?php echo site_url("admin/kelola_penduduk/form_edit/$row->nik");?>">
+						<i class="glyphicon glyphicon-edit"></i> Edit</a>
+						<a class="btn hapus btn-danger" href="<?php echo site_url("admin/kelola_penduduk/hapus/$row->nik");?>"> 
+						<i class="glyphicon glyphicon-remove"></i> Hapus</a>	
 					</td>
 				</tr>
 			<?php endforeach;?>					
@@ -36,3 +47,15 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.hapus').click(function () {
+			if (confirm("Apakah Anda Yakin?")) {
+				return true;
+			}
+			else{
+				return false;
+			}
+		})
+	})
+</script>

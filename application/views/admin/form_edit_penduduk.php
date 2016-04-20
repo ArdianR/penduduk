@@ -1,7 +1,7 @@
 <div class="col-md-12">
 <h4>Edit Data Penduduk</h4>
 <hr>
-	<form class="form-group" method="post" action="<?php echo site_url('admin/kelola_penduduk/update');?>">
+	<form class="form-group" method="post" action="<?php echo site_url('admin/kelola_penduduk/update');?>" enctype="multipart/form-data">
 	<div class="panel panel-default">
 	<div class="panel-heading">
 		Form Data Penduduk
@@ -12,15 +12,46 @@
 	<small class="text-danger">* Tulis Dengan Huruf KAPITAL</small>		
 			<table class="table table-condensed table-hover">
 				<tr>
+					<td colspan="2">
+						<?php if (!empty($row->foto)){?>
+						<img width="500px;" height="auto" class="img-center" src="<?php echo base_url("upload/$row->foto");?>">
+						<?php }else{?>
+						<h1 class="text-center text-muted"> Tidak Ada Foto</h1>
+						<?php };?>
+					</td>
+				</tr>
+				<tr>
 					<td width="50%">
 						<label>NIK</label>
-						<input value="<?php echo $row->nik;?>"  min="0" name="nik" type="number" class="form-control input-sm" placeholder="NIK">
+						<input readonly value="<?php echo $row->nik;?>"  min="0" name="nik" type="number" class="form-control input-sm" placeholder="NIK">
+
 						<label>Nama Lengkap</label>
 						<input value="<?php echo $row->nama;?>" name="nama" type="text" class="form-control input-sm" placeholder="Nama Lengkap">
 						<label>Tempat Lahir</label>
 						<input value="<?php echo $row->tempat_lahir;?>" name="tempat_lahir" type="text" class="form-control input-sm" placeholder="Tempat Lahir">
 						<label>Tanggal Lahir</label>
-						<input value="<?php echo ($row->tanggal_lahir);?>" name="tanggal_lahir" type="date" class="form-control input-sm" placeholder="hh/bb/tttt - (Hari/Bulan/Tahun)">
+						<div class="form-inline">
+							<div class="form-group">
+								<select name="tanggal_lahir" class="form-control">
+									<option value="<?=substr($row->tanggal_lahir,8,2);?>"><?=substr($row->tanggal_lahir,8,2);?></option>
+									<?php for($i=1;$i<=31;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="bulan_lahir" class="form-control">
+								<option value="<?=substr($row->tanggal_lahir,5,2);?>"><?=substr($row->tanggal_lahir,5,2);?></option>
+									<?php for($i=1;$i<=12;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="tahun_lahir" class="form-control">
+									<option value="<?=substr($row->tanggal_lahir,0,4);?>"><?=substr($row->tanggal_lahir,0,4);?></option>
+									<?php $d=date('Y');for($i=$d-30;$i<=$d+10;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+							</div>
+						</div>
 						
 						<label>RT/RW</label>
 						<div class="row">
@@ -78,7 +109,33 @@
 							<option value="WNA">WNA</option>
 						</select>
 						<label>Berlaku Hingga</label>
-						<input value="<?php echo $row->berlaku_hingga ;?>" name="berlaku_hingga" type="date" class="form-control input-sm" placeholder="hh/bb/tttt - (Hari/Bulan/Tahun)">
+						<div class="form-inline">
+							<div class="form-group">
+								<select name="tanggal_aktif" class="form-control">
+									<option value="<?=substr($row->berlaku_hingga,8,2);?>"><?=substr($row->berlaku_hingga,8,2);?></option>
+									<?php for($i=1;$i<=31;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="bulan_aktif" class="form-control">
+									<option value="<?=substr($row->berlaku_hingga,5,2);?>"><?=substr($row->berlaku_hingga,5,2);?></option>
+									<<?php for($i=1;$i<=12;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="tahun_aktif" class="form-control">
+								<option value="<?=substr($row->berlaku_hingga,0,4);?>"><?=substr($row->berlaku_hingga,0,4);?></option>
+									<?php $d=date('Y');for($i=$d-30;$i<=$d+10;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+							</div>
+						</div>
+						<label>Foto</label>
+						<input class="form-control" name="userfile" type="file" accept="image/jpeg">
+						<div class="alert alert-warning">
+							<p>Kosongkan Jika Tidak Di Ganti</p>
+						</div>
 					</td>
 				</tr>
 			</table>

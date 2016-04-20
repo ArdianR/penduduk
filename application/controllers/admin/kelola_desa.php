@@ -17,9 +17,17 @@ session_start();
 		}
 		public function index()
 		{
-			$data['desa']=$this->datadesa->desa();
+			$detail=$this->datadesa->detail_desa();
+			foreach ($detail->result() as $row)
+			if (!empty($row->nama_desa)) {
+				$data['nama_desa']=$row->nama_desa;
+			}
+			else
+			{
+				$data['nama_desa']="Belum Di Set";
+			}
 			$this->load->view('style');
-			$this->load->view('admin/tabel_desa',$data);
+			$this->load->view('admin/form_desa',$data);
 		}
 		public function tambah()
 		{
@@ -44,6 +52,14 @@ session_start();
 		{
 			$this->datadesa->update();
 	
+			redirect('admin/kelola_desa');
+		}
+		public function update_detail()
+		{
+
+			$data = array('nama_desa' => $this->input->post('nama_desa'));
+			$this->datadesa->update_detail($data);
+			$this->session->set_flashdata('pesan','<div class="alert alert-success text-center">Berhasil Update</div>');
 			redirect('admin/kelola_desa');
 		}
 

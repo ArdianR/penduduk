@@ -1,7 +1,7 @@
 <div class="col-md-12">
 <h4>Tambah Data Penduduk</h4>
 <hr>
-	<form class="form-group" method="post" action="<?php echo site_url('admin/kelola_penduduk/tambah');?>">
+	<form class="form-group" method="post" action="<?php echo site_url('admin/kelola_penduduk/tambah');?>" enctype="multipart/form-data">
 	<div class="panel panel-default">
 	<div class="panel-heading">
 		Form Data Penduduk
@@ -10,9 +10,9 @@
 	</div>
 	<div class="panel-body">
 	<small class="text-danger">* Tulis Dengan Huruf KAPITAL</small>		
-			<table class="table table-condensed table-hover">
+			<table class="table table-condensed">
 				<tr>
-					<td width="50%">
+					<td width="45%">
 						<label>NIK</label>
 						<input min="0" name="nik" type="number" class="form-control input-sm" placeholder="NIK">
 						<label>Nama Lengkap</label>
@@ -20,8 +20,25 @@
 						<label>Tempat Lahir</label>
 						<input name="tempat_lahir" type="text" class="form-control input-sm" placeholder="Tempat Lahir">
 						<label>Tanggal Lahir</label>
-						<input name="tanggal_lahir" type="date" class="form-control input-sm" placeholder="hh/bb/tttt - (Hari/Bulan/Tahun)">
-						
+						<div class="form-inline">
+							<div class="form-group">
+								<select name="tanggal_lahir" class="form-control">
+									<?php for($i=1;$i<=31;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="bulan_lahir" class="form-control">
+									<?php for($i=1;$i<=12;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="tahun_lahir" class="form-control">
+									<?php $d=date('Y');for($i=$d-30;$i<=$d+10;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+							</div>
+						</div>
 						<label>RT/RW</label>
 						<div class="row">
 						  <div class="col-md-3">
@@ -60,11 +77,14 @@
 						 </select>
 						 
 					</td>
-					<td>
+					<td  width="5%">
+						
+					</td>
+					<td width="45%">
 					<label>Dusun</label>
-						<input class="form-control input-sm" name="dusun" placeholder="Desa/Keluarahan">
+						<input class="form-control input-sm" name="dusun" placeholder="Dusun/Keluarahan">
 						<label>Desa</label>
-						<input class="form-control input-sm" name="desa" placeholder="Desa/Keluarahan">
+						<input class="form-control input-sm" name="desa" placeholder="Desa/Keluarahan" value="<?=$nama_desa;?>">
 						<label>Kecamatan</label>
 						<input class="form-control input-sm" name="kecamatan" placeholder="Kecamatan">
 						<label>Status Perkawinan</label>
@@ -82,18 +102,33 @@
 							<option value="WNA">WNA</option>
 						</select>
 						<label>Berlaku Hingga</label>
-						<input name="berlaku_hingga" type="date" class="form-control input-sm" placeholder="hh/bb/tttt - (Hari/Bulan/Tahun)">
-						<label>Desa Sekarang</label>
-						<select class="form-control input-sm" name="kode_desa">
-						<?php foreach($desa->result() as $row):?>
-							<option value="<?php echo $row->kode_desa;?>"><?php echo $row->nama_desa;?></option>
-						<?php endforeach;?>	
-						</select>
+						<div class="form-inline">
+							<div class="form-group">
+								<select name="tanggal_aktif" class="form-control">
+									<?php for($i=1;$i<=31;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="bulan_aktif" class="form-control">
+									<?php for($i=1;$i<=12;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+								<select name="tahun_aktif" class="form-control">
+									<?php $d=date('Y');for($i=$d-30;$i<=$d+10;$i++):?>
+										<option value="<?=sprintf("%'.02d", $i);?>"><?=sprintf("%'.02d", $i);?></option>
+									<?php endfor;?>
+								</select>
+							</div>
+						</div>
+						<label>Foto</label>
+						<input class="form-control" name="userfile" type="file" accept="image/jpeg">
 					</td>
 				</tr>
 			</table>
-	
-			<a class="btn btn-default" href="<?php echo base_url('admin/kelola_penduduk');?>"><i class="glyphicon glyphicon-fast-backward"></i> Kembali</a>
+			<a class="btn btn-default" href="<?php echo base_url('admin/kelola_penduduk');?>">
+				<i class="glyphicon glyphicon-fast-backward"></i> Kembali
+			</a>
 	<div class="pull-right">
 		<button class="btn-primary btn" type="submit"><i class="glyphicon glyphicon-floppy-save"></i> Simpan</button>
 		<button class="btn btn-warning" type="reset"><i class="glyphicon glyphicon-retweet"></i> Reset</button>

@@ -24,6 +24,7 @@
 				return null;
 			}
 		}
+
 		public function laki_desa($kode_desa)
 		{
 			$laki="LAKI-LAKI";
@@ -79,29 +80,11 @@
 			}
 		}
 		
-		public function add()
+		public function add($data)
 		{
-			$data=array(
-				'nik'=>$this->input->post('nik'),
-				'agama'=>$this->input->post('agama'),
-				'kode_desa'=>$this->input->post('kode_desa'),
-				'dusun'=>$this->input->post('dusun'),
-				'kode_admin'=>$this->input->post('kode_admin'),
-				'nama'=>$this->input->post('nama'),
-				'tempat_lahir'=>$this->input->post('tempat_lahir'),
-				'tanggal_lahir'=>$this->input->post('tanggal_lahir'),
-				'jenis_kelamin'=>$this->input->post('jenis_kelamin'),
-				'rt'=>$this->input->post('rt'),
-				'rw'=>$this->input->post('rw'),
-				'desa'=>$this->input->post('desa'),
-				'kecamatan'=>$this->input->post('kecamatan'),
-				'status'=>$this->input->post('status'),
-				'pekerjaan'=>$this->input->post('pekerjaan'),
-				'kewarganegaraan'=>$this->input->post('kwn'),
-				'berlaku_hingga'=>$this->input->post('berlaku_hingga')
-				);
 			$this->db->insert('penduduk',$data);
 		}
+		
 		public function one($nik)
 		{
 			$this->db->where('nik',$nik);
@@ -132,29 +115,15 @@
 				return null;
 			}
 		}
-		public function update_data()
+		public function update($data)
 		{
-			$nik=$this->input->post('nik');
-			$data=array(
-				'nik'=>$this->input->post('nik'),
-				'agama'=>$this->input->post('agama'),
-				'kode_desa'=>$this->input->post('kode_desa'),
-				'dusun'=>$this->input->post('dusun'),
-				'kode_admin'=>$this->input->post('kode_admin'),
-				'nama'=>$this->input->post('nama'),
-				'tempat_lahir'=>$this->input->post('tempat_lahir'),
-				'tanggal_lahir'=>$this->input->post('tanggal_lahir'),
-				'jenis_kelamin'=>$this->input->post('jenis_kelamin'),
-				'rt'=>$this->input->post('rt'),
-				'rw'=>$this->input->post('rw'),
-				'desa'=>$this->input->post('desa'),
-				'kecamatan'=>$this->input->post('kecamatan'),
-				'status'=>$this->input->post('status'),
-				'pekerjaan'=>$this->input->post('pekerjaan'),
-				'kewarganegaraan'=>$this->input->post('kwn'),
-				'berlaku_hingga'=>$this->input->post('berlaku_hingga')
-				);
-			$this->db->where('nik',$nik);
+			$this->db->where('nik',$data['nik']);
 			$this->db->update('penduduk',$data);
 		}
+		public function allStay()
+		{
+			$this->db->where('status_tinggal',1);
+			return $this->db->get('penduduk');
+		}
+
 	}

@@ -12,7 +12,7 @@
 		<div id="pesan" class="text-center">
 			<?php echo $this->session->flashdata('pesan');?>
 		</div>
-<table class="table table-hover table-striped table-condensed table-bordered table-responsive">
+<table class="table table-hover table-striped table-condensed table-bordered table-responsive" id="tbl_penduduk">
 	<thead class="bg-success">
 		<th colspan="12">
 		<div class="btn-group">
@@ -26,7 +26,7 @@
 		</th>
 	</thead>
 	<thead id="cari">
-		<th colspan="9" class="bg-primary">
+		<th colspan="10" class="bg-primary">
 		<form class="form-group" method="post" action="<?php echo site_url('admin/kelola_penduduk/cari');?>">
 			<input required class="form-control input-sm" name="cari" placeholder="Cari Nama atau NIK...">
 		</form>
@@ -58,10 +58,33 @@
 			<td><?php echo $row->berlaku_hingga;?></td>
 			<td class="text-center">
 				<a title="Lihat Data Penduduk" class="btn btn-info btn-sm" href="<?php echo site_url("admin/kelola_penduduk/detail/$row->nik");?>"><i class="glyphicon glyphicon-eye-open"></i> </a>
-				<a title="Edit Data Penduduk" class="btn btn-warning btn-sm" href="<?php echo site_url("admin/kelola_penduduk/form_edit/$row->nik");?>"><i class="glyphicon glyphicon-edit"></i> </a>
-				<a title="Hapus Data Penduduk" class="btn- btn-danger btn-sm" href="<?php echo site_url("admin/kelola_penduduk/hapus/$row->nik");?>"><i class="glyphicon glyphicon-remove"></i> </a>
+				<a title="Edit Data Penduduk" class="btn btn-warning btn-sm" 
+				   href="<?php echo site_url("admin/kelola_penduduk/form_edit/$row->nik");?>">
+					<i class="glyphicon glyphicon-edit"></i>
+				</a>
+				<a id="<?php echo $row->nik;?>" title="Hapus Data Penduduk" class="btn hapus btn-danger btn-sm" 
+				   href="<?php echo site_url("admin/kelola_penduduk/hapus/$row->nik");?>">
+				   <i class="glyphicon glyphicon-remove"></i> 
+				</a>
 			</td>
 		</tr>
 		<?php endforeach;?>
 	</tbody>
 </table>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.hapus').click(function () {
+			if (confirm("Apakah Anda Yakin?")) {
+				return true;
+			}
+			else{
+				return false;
+			}
+		})
+	})
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+    $('#tbl_penduduk').DataTable();
+} );
+</script>

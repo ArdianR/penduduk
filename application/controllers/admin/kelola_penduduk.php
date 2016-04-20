@@ -18,9 +18,21 @@ session_start();
 				redirect('beranda/login');
 			}
 		}
+		public function detailDesa()
+		{
+			$detail=$this->datadesa->detail_desa();
+			foreach ($detail->result() as $row)
+			if (!empty($row->nama_desa)) {
+				return $desa=$row->nama_desa;
+			}
+			else
+			{
+				return $desa="Belum Di Set";
+			}
+		}
 		public function form_tambah()
 		{
-			$data['desa']=$this->datadesa->desa();
+			$data['nama_desa']=$this->detailDesa();
 			$this->load->view('style');
 			$this->load->view('admin/form_tambah_penduduk',$data);
 		}
@@ -40,9 +52,59 @@ session_start();
 		}
 		public function tambah()
 		{
-			$this->datapenduduk->add();
-			$this->session->set_flashdata('pesan','<div class="alert alert-success">Data Berhasil Ditambah</div>');
-			redirect('admin/kelola_penduduk');
+
+			$tahun_lahir=$this->input->post('tahun_lahir');
+			$tanggal_lahir=$this->input->post('tanggal_lahir');
+			$bulan_lahir=$this->input->post('bulan_lahir');
+			$tanggal_aktif=$this->input->post('tanggal_aktif');
+			$bulan_aktif=$this->input->post('bulan_aktif');
+			$tahun_aktif=$this->input->post('tahun_aktif');
+			$tgl=$tahun_lahir.'-'.$bulan_lahir.'-'.$tanggal_lahir;
+			$berlaku=$tahun_aktif.'-'.$bulan_aktif.'-'.$tanggal_aktif;
+			$text=array(
+				'nik'=>$this->input->post('nik'),
+				'agama'=>$this->input->post('agama'),
+				'kode_desa'=>$this->input->post('kode_desa'),
+				'dusun'=>$this->input->post('dusun'),
+				'kode_admin'=>$this->input->post('kode_admin'),
+				'nama'=>$this->input->post('nama'),
+				'tempat_lahir'=>$this->input->post('tempat_lahir'),
+				'tanggal_lahir'=>$tgl,
+				'jenis_kelamin'=>$this->input->post('jenis_kelamin'),
+				'rt'=>$this->input->post('rt'),
+				'rw'=>$this->input->post('rw'),
+				'desa'=>$this->input->post('desa'),
+				'kecamatan'=>$this->input->post('kecamatan'),
+				'status'=>$this->input->post('status'),
+				'pekerjaan'=>$this->input->post('pekerjaan'),
+				'kewarganegaraan'=>$this->input->post('kwn'),
+				'berlaku_hingga'=>$berlaku
+				);
+
+			$config['upload_path'] = './upload/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']	= '1000';
+			$config['encrypt_name']=TRUE;
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if ( ! $this->upload->do_upload())
+			{
+				$error = array('error' => $this->upload->display_errors());
+				$this->session->set_flashdata('pesan',"<div class='alert alert-danger'> ".$error['error']."</div>");
+				redirect('admin/kelola_penduduk');
+			}
+			else
+			{
+				$image = array('upload_data' => $this->upload->data());
+				$file_name=$image['upload_data']['file_name'];
+				$foto=array('foto'=>$file_name);
+				$data=array_merge($text,$foto);
+				$this->datapenduduk->add($data);
+				$this->session->set_flashdata('pesan',"<div class='alert alert-success'> Berhasil </div>");
+				redirect('admin/kelola_penduduk');
+			}
+			
+			
 		}
 		 public function detail($nik)
 		 {
@@ -75,8 +137,60 @@ session_start();
 		 }
 		 public function update()
 		 {
-		 	$this->datapenduduk->update_data();
-		 	$this->session->set_flashdata('pesan','<div class="alert alert-success">Data Telah di Update!</div>');
+		 		
+
+
+			$tahun_lahir=$this->input->post('tahun_lahir');
+			$tanggal_lahir=$this->input->post('tanggal_lahir');
+			$bulan_lahir=$this->input->post('bulan_lahir');
+			$tanggal_aktif=$this->input->post('tanggal_aktif');
+			$bulan_aktif=$this->input->post('bulan_aktif');
+			$tahun_aktif=$this->input->post('tahun_aktif');
+
+			$tgl=$tahun_lahir.'-'.$bulan_lahir.'-'.$tanggal_lahir;
+			$berlaku=$tahun_aktif.'-'.$bulan_aktif.'-'.$tanggal_aktif;
+			$text=array(
+				'nik'=>$this->input->post('nik'),
+				'agama'=>$this->input->post('agama'),
+				'kode_desa'=>$this->input->post('kode_desa'),
+				'dusun'=>$this->input->post('dusun'),
+				'kode_admin'=>$this->input->post('kode_admin'),
+				'nama'=>$this->input->post('nama'),
+				'tempat_lahir'=>$this->input->post('tempat_lahir'),
+				'tanggal_lahir'=>$tgl,
+				'jenis_kelamin'=>$this->input->post('jenis_kelamin'),
+				'rt'=>$this->input->post('rt'),
+				'rw'=>$this->input->post('rw'),
+				'desa'=>$this->input->post('desa'),
+				'kecamatan'=>$this->input->post('kecamatan'),
+				'status'=>$this->input->post('status'),
+				'pekerjaan'=>$this->input->post('pekerjaan'),
+				'kewarganegaraan'=>$this->input->post('kwn'),
+				'berlaku_hingga'=>$berlaku
+				);
+			$config['upload_path'] = './upload/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']	= '1000';
+			$config['encrypt_name']=TRUE;
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload())
+			{
+				$data=$text;
+				$this->datapenduduk->update($data);
+				$this->session->set_flashdata('pesan','<div class="alert alert-success">Data Telah di Update!</div>');
 		 		redirect('admin/kelola_penduduk');
+			}
+			else
+			{
+				$image = array('upload_data' => $this->upload->data());
+				$file_name=$image['upload_data']['file_name'];
+				$foto=array('foto'=>$file_name);
+				$data=array_merge($text,$foto);
+				$this->datapenduduk->update($data);
+				$this->session->set_flashdata('pesan','<div class="alert alert-success">Data Telah di Update!</div>');
+		 		redirect('admin/kelola_penduduk');
+			}
+		 		
 		 }
 	}

@@ -117,4 +117,14 @@
 			$this->db->where('kode_potensi',$kode_potensi);
 			$this->db->delete('potensi');
 		}
+		public function update_detail($data)
+		{
+			$this->db->where('id',1);
+			$this->db->update('infodesa',$data);
+		}
+		public function detail_desa()
+		{
+			$this->db->where('id',1);
+			return $this->db->get('infodesa');
+		}
 	}

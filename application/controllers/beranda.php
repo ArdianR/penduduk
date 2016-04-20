@@ -8,6 +8,7 @@ class Beranda extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper('dateindo');
+		$this->load->model('datadesa');
 		$this->load->model('datainformasi');
 		$data['allinformasi'] =$this->datainformasi->all();
 	}
@@ -40,27 +41,47 @@ class Beranda extends CI_Controller {
 		$this->load->view('error_login');
 
 	}
+	// public function data_kependudukan()
+	// {
+	// 	$this->load->model('datainformasi');
+	// 	$data['allinformasi'] =$this->datainformasi->all();
+	// 	$data['title']="Web Potensi Wado - Data Kependudukan";
+	// 	$data['tempat']="Semua Wilayah";
+	// 	//data desa
+	// 	$this->load->model('datadesa');
+	// 	$data['desa']=$this->datadesa->desa();
+	// 	$data['tempat']="Semua Wilayah";
+	// 	$data['luas']="";
+	// 	$data['ketinggian']="";
+	// 	$data['keadaan_permukaan']="";
+	// 	//data penduduk
+	// 	$this->load->model('datapenduduk');
+	// 	$data['all']=$this->datapenduduk->all();
+	// 	$data['laki']=$this->datapenduduk->laki();
+	// 	$data['pr']=$this->datapenduduk->pr();
+	// 	$this->load->view('style');
+	// 	$this->load->view('nav',$data);
+	// 	$this->load->view('data_penduduk',$data);
+	// }
+	public function detailDesa()
+		{
+			$detail=$this->datadesa->detail_desa();
+			foreach ($detail->result() as $row)
+			if (!empty($row->nama_desa)) {
+				return $desa=$row->nama_desa;
+			}
+			else
+			{
+				return $desa="Belum Di Set";
+			}
+		}
 	public function data_kependudukan()
 	{
-		$this->load->model('datainformasi');
+		$data['nama_desa']=$this->detailDesa();
 		$data['allinformasi'] =$this->datainformasi->all();
-		$data['title']="Web Potensi Wado - Data Kependudukan";
-		$data['tempat']="Semua Wilayah";
-		//data desa
-		$this->load->model('datadesa');
-		$data['desa']=$this->datadesa->desa();
-		$data['tempat']="Semua Wilayah";
-		$data['luas']="";
-		$data['ketinggian']="";
-		$data['keadaan_permukaan']="";
-		//data penduduk
-		$this->load->model('datapenduduk');
-		$data['all']=$this->datapenduduk->all();
-		$data['laki']=$this->datapenduduk->laki();
-		$data['pr']=$this->datapenduduk->pr();
 		$this->load->view('style');
 		$this->load->view('nav',$data);
-		$this->load->view('data_penduduk',$data);
+		$this->load->view('display_penduduk',$data);
 	}
 	public function data_per_desa()
 	{
